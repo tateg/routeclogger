@@ -2,28 +2,28 @@
 
 # Route Clogger
 # Written by Tate Galbraith
-# June 2017
+# January 2018
 
-require 'net/ssh'
 require 'ipaddress'
-require 'colorize'
 
-# Setup SSH session and execute commands from commands array
-def run_ssh(host, user, password, address_objects)
-  Net::SSH.start("#{host}", "#{user}", :password => "#{password}") do |ssh|
-    ssh.exec("\n")
-    sleep 1
-    ssh.exec("\n")
-    sleep 1
-    ssh.exec("en\n")
-    sleep 1
-    ssh.exec("conf t\n")
-    address_objects.each do |address_object|
-      @subnet = address_object.address
-      @mask = address_object.netmask
-      ssh.exec("ip route #{@subnet} #{@mask} null 0")
-    end
+class Route
+  attr_reader :base_network, :quantity
+  
+  def initialize(args)
+    @base_network = args[:base_network]
+    @quantity     = args[:quantity]
   end
+  
+end
+
+class Command
+  attr_reader :prefix, :suffix
+  
+  def initialize(args)
+    @prefix = args[:prefix]
+    @suffix = args[:suffix]
+  end
+  
 end
 
 # Setup bogus subnets for placement in route table
