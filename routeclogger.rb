@@ -6,12 +6,20 @@
 
 require 'ipaddress'
 
-class Route
+class Networks
   attr_reader :base_network, :quantity
   
   def initialize(args)
     @base_network = args[:base_network]
     @quantity     = args[:quantity]
+  end
+  
+  def instantiate_base_networks
+    IPAddress(base_network)
+  end
+  
+  def split_networks
+    instantiate_base_networks / quantity  
   end
   
 end
@@ -23,6 +31,8 @@ class Command
     @prefix = args[:prefix]
     @suffix = args[:suffix]
   end
+  
+  
   
 end
 
