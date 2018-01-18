@@ -10,7 +10,7 @@ Initial usage was centered around the need to place a large amount of null route
 - Default command suffix: null 0
 
 ## Sample Usage
-- The example below will use all default command prefixes and suffixes with a default base subnet of 10.0.0.0/8. It will generate 512 "ip route <address> <netmask> null 0" commands.
+- The example below will use all default command prefixes and suffixes with a default base subnet of 10.0.0.0/8. It will generate 512 "ip route [address] [netmask] null 0" commands.
 ```
 commands = Command.new(networks: Networks.new(quantity: 512))
 commands.display
