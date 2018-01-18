@@ -44,4 +44,11 @@ class Command
       puts "#{prefix} #{subnet.address} #{subnet.netmask} #{suffix}" }
   end
   
+  def generate
+    @generated_routes = []
+    subnets.each { |subnet|
+      @generated_routes.push("#{prefix} #{subnet.address} #{subnet.netmask} #{suffix}") }
+    return @generated_routes
+  end
+  
 end
