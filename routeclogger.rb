@@ -1,16 +1,17 @@
 #!/usr/bin/env ruby
 
-# Route Clogger
+# Route Clogger - Routing command generator
 # Written by Tate Galbraith
 # January 2018
 
 require 'ipaddress'
 
 class Networks
+  
   attr_reader :base_network, :quantity
   
   def initialize(args)
-    @base_network = args[:base_network]
+    @base_network = args.fetch(:base_network, "10.0.0.0/8")
     @quantity     = args[:quantity]
   end
   
@@ -25,29 +26,22 @@ class Networks
 end
 
 class Command
-  attr_reader :prefix, :suffix
+  
+  attr_reader :prefix, :suffix, :networks
   
   def initialize(args)
-    @prefix = args[:prefix]
-    @suffix = args[:suffix]
+    @prefix   = args.fetch(:prefix, "ip route")
+    @suffix   = args.fetch(:suffix, "null 0")
+    @networks = args[:networks]
   end
   
-  
-  
-end
+  def subnets
+    networks.split_networks
+  end
 
-# Setup bogus subnets for placement in route table
-# Use a 10.0.0.0 to begin with because its the largest
-# Split the /8 by number entered and create address obj foreach in arr
-def create_bogus_routes(quantity)
-  @base_net = "10.0.0.0/8"
-  @base_net_instance = IPAddress(@base_net)
-  @split_net_arr = @base_net_instance / quantity
-  return @split_net_arr
-end
-
-create_bogus_routes(512).each do |net|
-  @address = net.address
-  @mask = net.netmask
-  puts "ip route #{@address} #{@mask} null 0"
+  def display
+    subnets.each { |subnet|
+      puts "#{prefix} #{subnet.address} #{subnet.netmask} #{suffix}" }
+  end
+  
 end
