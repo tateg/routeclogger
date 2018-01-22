@@ -12,8 +12,12 @@ Minitest::Reporters.use!
 
 class RouteCloggerTest < Minitest::Test
 
-  def test_true
-    assert_equal(1, 1)
+  def setup
+  end
+
+  def test_subnet_slicing_quantity
+    @networks = Networks.new(quantity: 10)
+    assert_equal(@networks.split_networks.count, 10)
   end
 
 end
