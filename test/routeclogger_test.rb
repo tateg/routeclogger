@@ -13,6 +13,14 @@ Minitest::Reporters.use!
 class RouteCloggerTest < Minitest::Test
 
   def setup
+    @networks_mock = MiniTest::Mock.new
+  end
+
+  def test_command_sends_splits_networks
+    @command = Command.new(networks: @networks_mock)
+    @networks_mock.expect(:split_networks, Array)
+    @command.subnets
+    @networks_mock.verify
   end
 
   def test_subnet_slicing_quantity
